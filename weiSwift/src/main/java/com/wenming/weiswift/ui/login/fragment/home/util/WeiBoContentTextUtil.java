@@ -2,7 +2,6 @@ package com.wenming.weiswift.ui.login.fragment.home.util;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -10,6 +9,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.legacy.ShortUrlAPI;
+import com.wenming.weiswift.ui.common.login.AccessTokenKeeper;
+import com.wenming.weiswift.ui.common.login.Constants;
+import com.wenming.weiswift.ui.login.fragment.home.video.MyWebView;
+import com.wenming.weiswift.utils.LogUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -74,8 +81,29 @@ public class WeiBoContentTextUtil {
 
                     @Override
                     public void onClick(View widget) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        context.startActivity(browserIntent);
+//                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                        context.startActivity(browserIntent);
+
+                        ShortUrlAPI shortUrlAPI = new ShortUrlAPI(context, Constants.APP_KEY, AccessTokenKeeper.readAccessToken(context));
+                        String[] strings = new String[]{url};
+                        shortUrlAPI.expand(strings, new RequestListener() {
+                            @Override
+                            public void onComplete(String s) {
+                                LogUtil.d(s);
+
+                            }
+
+                            @Override
+                            public void onWeiboException(WeiboException e) {
+
+                            }
+                        });
+
+
+                        Intent intent = new Intent(context, MyWebView.class);
+                        intent.putExtra("url", "http://video.weibo.com/show?fid=1034:317e76a095b325e998441c0d9b81d60d");
+                        context.startActivity(intent);
+
                         //Toast.makeText(context, "点击了网址：" + url, Toast.LENGTH_LONG).show();
                     }
                 };

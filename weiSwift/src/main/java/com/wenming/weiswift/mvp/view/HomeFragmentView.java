@@ -55,7 +55,6 @@ public interface HomeFragmentView {
      */
     public void scrollToTop(boolean refreshData);
 
-
     public void showRecyclerView();
 
     public void hideRecyclerView();

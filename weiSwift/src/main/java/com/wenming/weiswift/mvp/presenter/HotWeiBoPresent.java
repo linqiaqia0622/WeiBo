@@ -11,5 +11,4 @@ public interface HotWeiBoPresent {
     public void requestMoreData(Context context);
 
 
-
 }
