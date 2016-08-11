@@ -33,7 +33,8 @@ import java.util.regex.Pattern;
  */
 public class Comment implements Parcelable {
 
-    private static Pattern mpattern;
+    private static Pattern
+            mpattern;
     private static Matcher mmatcher;
 
     /**
