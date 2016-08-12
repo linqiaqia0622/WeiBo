@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,15 +15,28 @@ import android.view.MenuItem;
 import android.view.View;
 
 
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private String mTextviewArray[] = {"首页", "消息", "发现", "我"};
+    BottomNavigationBar bottomNavigationBar;
+    ViewPager mViewPager;
+    String res=null;
 
+    public String miao;
+    //定义数组来存放按钮图片
+    private int mImageViewArray[] = {R.drawable.tabbar_home_auto, R.drawable.tabbar_message_auto,
+            R.drawable.tabbar_discover_auto, R.drawable.tabbar_post_auto};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        bottomNavigationBar=(BottomNavigationBar)findViewById(R.id.bottom_navigation_bar);
+
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -42,6 +56,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        initBottomNavigationBar();
     }
 
     @Override
@@ -99,5 +114,49 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public void initBottomNavigationBar() {
+     //   bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
+        for (int i = 0; i < 4; i++) {
+            bottomNavigationBar.addItem(new BottomNavigationItem(mImageViewArray[i], mTextviewArray[i]));
+        }
+        bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener(){
+            @Override
+            public void onTabSelected(int position) {
+                mViewPager.setCurrentItem(position);
+            }
+            @Override
+            public void onTabUnselected(int position) {
+            }
+            @Override
+            public void onTabReselected(int position) {
+            }
+        });
+//        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//                bottomNavigationBar.selectTab(position);
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
+        bottomNavigationBar
+                .setMode(BottomNavigationBar.MODE_CLASSIC);
+        bottomNavigationBar
+                .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_RIPPLE);
+        bottomNavigationBar
+                .setActiveColor(R.color.colorAccent)
+                .setInActiveColor("#FFFFFF")
+                .setBarBackgroundColor("#ECECEC");
+
+        bottomNavigationBar.initialise();
     }
 }
